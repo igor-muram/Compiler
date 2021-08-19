@@ -29,6 +29,8 @@ public:
 	Parser(std::string grammarfile, table_manager* manager);
 	void Parse(token_iterator begin, token_iterator end);
 
+	std::vector<variable> variables;
+
 private:
 	table_manager* manager;
 	GrammarTable table;
@@ -38,9 +40,6 @@ private:
 	token_iterator token;
 	std::stack<int> stack;
 
-	std::vector<variable> variables;
-
-	// For table
 	void Jump();
 	void Accept(std::string raw_token);
 	void Stack();

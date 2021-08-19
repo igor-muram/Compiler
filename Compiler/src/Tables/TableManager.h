@@ -88,6 +88,12 @@ public:
 		return constants->contains(lex);
 	}
 
+	bool is_identificator(std::string word)
+	{
+		lexeme lex(word);
+		return identificators->contains(lex);
+	}
+
 	ID get_id(string word)
 	{
 		ID id;

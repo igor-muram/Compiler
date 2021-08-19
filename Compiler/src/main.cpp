@@ -7,8 +7,10 @@
 #include "Lexer/ID.h"
 
 #include "Parser/Parser.h"
-
 #include "ASTBuilder/ASTBuilder.h"
+
+#include "CodeGenerator/CodeGenerator.h"
+
 using namespace std;
 
 int main()
@@ -35,6 +37,21 @@ int main()
 	for (auto lex : ast.postfix)
 	{
 		std::cout << lex << " ";
+	}
+	
+	std::cout << std::endl;
+
+	CodeGenerator generator(&manager);
+	generator.Generate(ast.postfix, parser.variables);
+
+	for (auto iterator = generator.HeadBegin(); iterator != generator.HeadEnd(); iterator++)
+	{
+		std::cout << *iterator << std::endl;
+	}
+
+	for (auto iterator = generator.BodyBegin(); iterator != generator.BodyEnd(); iterator++)
+	{
+		std::cout << *iterator << std::endl;
 	}
 	cin.get();
 }
