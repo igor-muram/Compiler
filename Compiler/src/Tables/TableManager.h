@@ -54,9 +54,15 @@ public:
 
 	bool is_operator(char symbol)
 	{
-		string word;
+		std::string word;
 		word.push_back(symbol);
 		return operators->contains(word);
+	}
+
+
+	bool is_operator(std::string symbol)
+	{
+		return operators->contains(symbol);
 	}
 
 	bool is_delimiter(char symbol)
@@ -90,39 +96,42 @@ public:
 	}
 
 	// [TODO] : Переделать возврат строки, добавить isValid
-	string get_by_id(ID& id)
+	lexeme get_by_id(ID& id)
 	{
 		string word;
-		lexeme lex;
 
 		if (id.table_no == 0)
 		{
 			keywords->get_by_id(id, word);
-			return word;
+			return lexeme(word);
 		}
 		
 		if (id.table_no == 1)
 		{
 			operators->get_by_id(id, word);
-			return word;
+			return lexeme("operator", VARTYPE::VOID, word);
 		}
 
 		if (id.table_no == 2)
 		{
 			delimiters->get_by_id(id, word);
-			return word;
+			return lexeme(word);
 		}
 
 		if (id.table_no == 3)
 		{
+			lexeme lex;
 			identificators->get_by_id(id, lex);
-			return lex.get_name();
+			lex.set_name("var");
+			return lex;
 		}
 
 		if (id.table_no == 4)
 		{
+			lexeme lex;
 			constants->get_by_id(id, lex);
-			return lex.get_name();
+			lex.set_name("const");
+			return lex;
 		}
 	}
 

@@ -30,3 +30,5 @@ inline istream& operator>>(istream& stream, const ID& id)
 	stream >> id.table_no >> id.chain_no >> id.node_no;
 	return stream;
 }
+
+typedef vector<ID>::iterator token_iterator;

@@ -148,7 +148,7 @@ public:
 
 		if (node != nullptr)
 		{
-			value = node->get_value();
+			value = lexeme("", VARTYPE::VOID, node->get_value().get_name());
 			return true;
 		}
 		else return false;

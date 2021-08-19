@@ -148,15 +148,24 @@
   <ItemGroup>
     <ClCompile Include="src\Lexer\Lexer.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Parser\GrammarTable.cpp" />
+    <ClCompile Include="src\Parser\Parser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ASTBuilder\ASTBuilder.h" />
     <ClInclude Include="src\Lexer\ID.h" />
     <ClInclude Include="src\Lexer\Lexeme.h" />
     <ClInclude Include="src\Lexer\Lexer.h" />
+    <ClInclude Include="src\Parser\GrammarTable.h" />
+    <ClInclude Include="src\Parser\Parser.h" />
     <ClInclude Include="src\Tables\ConstTable.h" />
     <ClInclude Include="src\Tables\HashTable.h" />
     <ClInclude Include="src\Tables\TableManager.h" />
     <ClInclude Include="src\Types.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="input\program.txt" />
+    <Text Include="input\grammar_table.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

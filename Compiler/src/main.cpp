@@ -6,6 +6,9 @@
 #include "Lexer/Lexer.h"
 #include "Lexer/ID.h"
 
+#include "Parser/Parser.h"
+
+#include "ASTBuilder/ASTBuilder.h"
 using namespace std;
 
 int main()
@@ -14,31 +17,24 @@ int main()
 	stringstream buffer;
 	buffer << in.rdbuf();
 	string source = buffer.str();
-
 	in.close();
-	lexer lex;
+
+	table_manager manager;
+	lexer lex(&manager);
 	lex.scan(source);
 
 	token_iterator begin = lex.tokens_begin();
 	token_iterator end = lex.tokens_end();
 
-	error_iterator errors_begin = lex.errors_begin();
-	error_iterator errors_end = lex.errors_end();
+	Parser parser("input/grammar_table.txt", &manager);
+	parser.Parse(begin, end);
 
-	while (begin != end)
+	ASTBuilder ast(&manager);
+	ast.Build(begin, end);
+
+	for (auto lex : ast.postfix)
 	{
-		
-		cout << *begin << "\t" << lex.get_table_manager()->get_by_id(*begin) << endl;
-		begin++;
+		std::cout << lex << " ";
 	}
-
-	cout << endl;
-
-	while (errors_begin != errors_end)
-	{
-		cout << *errors_begin << endl;
-		errors_begin++;
-	}
-
 	cin.get();
 }

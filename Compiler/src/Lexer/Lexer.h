@@ -7,16 +7,13 @@
 
 using namespace std;
 
-typedef vector<ID>::iterator token_iterator;
 typedef vector<string>::iterator error_iterator;
 
 class lexer
 {
 public:
-	lexer();
+	lexer(table_manager* manager);
 	void scan(string& source);
-
-	table_manager* get_table_manager() { return &manager; }
 
 	vector<ID>::iterator tokens_begin() { return tokens.begin(); }
 	vector<string>::iterator errors_begin() { return errors.begin(); }
@@ -27,11 +24,13 @@ public:
 
 
 private:
-	table_manager manager;
+	table_manager* manager;
 	string::iterator pos;
 	string::iterator end;
 
 	int line = 0;
+
+	bool need = false;
 
 	vector<ID> tokens;
 	void word();

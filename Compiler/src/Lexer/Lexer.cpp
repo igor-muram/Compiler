@@ -1,8 +1,8 @@
 #include "Lexer.h"
 
-lexer::lexer()
+lexer::lexer(table_manager* manager)
 {
-	manager = table_manager();
+	this->manager = manager;
 }
 
 void lexer::scan(string& source)
@@ -24,9 +24,9 @@ void lexer::scan(string& source)
 			word();
 		else if (isdigit(*pos))
 			number();
-		else if (manager.is_operator(*pos))
+		else if (manager->is_operator(*pos))
 			op();
-		else if (manager.is_delimiter(*pos))
+		else if (manager->is_delimiter(*pos))
 			delimiter();
 		else if (*pos == '/')
 			comment();
@@ -42,13 +42,22 @@ void lexer::word()
 		pos++;
 	}
 
-	if (!manager.is_space(*pos) && !manager.is_delimiter(*pos) && !manager.is_operator(*pos) && *pos != '/')
+	if (!manager->is_space(*pos) && !manager->is_delimiter(*pos) && !manager->is_operator(*pos) && *pos != '/')
 	{
 		error();
 		pos++;
 	}
 
-	tokens.push_back(manager.get_id(word));
+	if (need && !manager->is_keyword(word))
+	{
+		tokens.push_back(manager->get_id(word));
+		tokens.push_back(manager->get_id(")"));
+		need = false;
+	}
+	else
+	{
+		tokens.push_back(manager->get_id(word));
+	}
 }
 
 void lexer::number()
@@ -60,13 +69,13 @@ void lexer::number()
 		pos++;
 	}
 
-	if (!manager.is_space(*pos) && !manager.is_delimiter(*pos) && !manager.is_operator(*pos) && *pos != '/')
+	if (!manager->is_space(*pos) && !manager->is_delimiter(*pos) && !manager->is_operator(*pos) && *pos != '/')
 	{
 		error();
 		pos++;
 	}
 
-	tokens.push_back(manager.get_id(number));
+	tokens.push_back(manager->get_id(number));
 }
 
 void lexer::op()
@@ -77,14 +86,14 @@ void lexer::op()
 		switch (*pos)
 		{
 		case '=':
-			tokens.push_back(manager.get_id("=="));
+			tokens.push_back(manager->get_id("=="));
 			pos++;
 			break;
 		case '(':
 		case '\t':
 		case ' ':
 		case '/':
-			tokens.push_back(manager.get_id("="));
+			tokens.push_back(manager->get_id("="));
 			break;
 		default:
 			if (!isalnum(*pos))
@@ -97,19 +106,44 @@ void lexer::op()
 		pos++;
 		if (*pos == '=')
 		{
-			tokens.push_back(manager.get_id("!="));
+			tokens.push_back(manager->get_id("!="));
 			pos++;
 		}
 		else
 			error();
 	}
+	else if (*pos == '-')
+	{
+		std::string prev = manager->get_by_id(tokens.back()).get_value();
+
+		if (manager->is_operator(prev) || prev == "(")
+		{
+			tokens.push_back(manager->get_id("("));
+			tokens.push_back(manager->get_id(std::to_string(0)));
+			tokens.push_back(manager->get_id("-"));
+			need = true;
+			pos++;
+		}
+		else
+		{ 
+			string op;
+			op.push_back(*pos);
+			tokens.push_back(manager->get_id(op));
+			pos++;
+			if (pos != end && !manager->is_space(*pos) && !isalnum(*pos) && *pos != '(')
+			{
+				error();
+				pos++;
+			}
+		}
+	}
 	else
 	{
 		string op;
 		op.push_back(*pos);
-		tokens.push_back(manager.get_id(op));
+		tokens.push_back(manager->get_id(op));
 		pos++;
-		if (pos != end && !manager.is_space(*pos) && !isalnum(*pos) && *pos != '(')
+		if (pos != end && !manager->is_space(*pos) && !isalnum(*pos) && *pos != '(')
 		{
 			error();
 			pos++;
@@ -121,7 +155,7 @@ void lexer::delimiter()
 {
 	string word;
 	word.push_back(*pos);
-	tokens.push_back(manager.get_id(word));
+	tokens.push_back(manager->get_id(word));
 
 	switch (*pos)
 	{
@@ -129,7 +163,7 @@ void lexer::delimiter()
 	case '{':
 	case '}':
 		pos++;
-		if (pos != end && !manager.is_space(*pos) && !isalpha(*pos) && *pos != '}' && *pos != '/')
+		if (pos != end && !manager->is_space(*pos) && !isalpha(*pos) && *pos != '}' && *pos != '/')
 		{
 			error();
 			pos++;
@@ -137,7 +171,7 @@ void lexer::delimiter()
 		break;
 	case ',':
 		pos++;
-		if (!manager.is_space(*pos) && !isalpha(*pos) && *pos != '/')
+		if (!manager->is_space(*pos) && !isalpha(*pos) && *pos != '/')
 		{
 			error();
 			pos++;
@@ -145,7 +179,7 @@ void lexer::delimiter()
 		break;
 	case '(':
 		pos++;
-		if (!manager.is_space(*pos) && !isalnum(*pos) && *pos != '(' && *pos != ')' && *pos != '/')
+		if (!manager->is_space(*pos) && !isalnum(*pos) && *pos != '(' && *pos != ')' && *pos != '/')
 		{
 			error();
 			pos++;
@@ -153,7 +187,7 @@ void lexer::delimiter()
 		break;
 	case ')':
 		pos++;
-		if (!manager.is_space(*pos) && *pos != ';' && *pos != ',' && *pos != ')' && *pos != '{' && *pos != '/')
+		if (!manager->is_space(*pos) && *pos != ';' && *pos != ',' && *pos != ')' && *pos != '{' && *pos != '/')
 		{
 			error();
 			pos++;

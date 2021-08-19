@@ -4,8 +4,11 @@
 #include <sstream>
 
 #include "../Types.h"
+#include "ID.h"
 
 using namespace std;
+
+typedef vector<ID>::iterator token_iterator;
 
 class lexeme 
 {
