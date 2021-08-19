@@ -156,8 +156,31 @@ private:
 	{
 		ASTNode* node = new ASTNode("decl");
 		Match("int");
-		node->AddChild(Expr(true));
 
+		std::vector<ASTNode*> exprs;
+		ASTNode* expr = Expr(false);
+
+		if (expr->Childs[0]->type != "var")
+			exprs.push_back(expr);
+
+		while (!IsMatch(";"))
+		{
+			Match(",");
+
+			expr = Expr(false);
+
+			if (expr->Childs[0]->type != "var")
+				exprs.push_back(expr);
+		}
+
+		for (int i = 0; i < exprs.size() - 1; i++)
+		{
+			node->AddChild(exprs[i]);
+			node->AddChild(new ASTNode(","));
+		}
+
+		node->AddChild(exprs.back());
+		node->AddChild(new ASTNode(Match(";")));
 		return node;
 	}
 
@@ -247,7 +270,7 @@ private:
 		std::stack<std::string> stack;
 		std::stack<ASTNode*> node_stack;
 
-		while (!IsMatch(";") && !IsMatch("{"))
+		while (!IsMatch(";") && !IsMatch("{") && !IsMatch(","))
 		{
 			if (IsMatch("var"))
 			{

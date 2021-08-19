@@ -75,7 +75,16 @@ void lexer::number()
 		pos++;
 	}
 
-	tokens.push_back(manager->get_id(number));
+	if (need)
+	{
+		tokens.push_back(manager->get_id(number));
+		tokens.push_back(manager->get_id(")"));
+		need = false;
+	}
+	else
+	{
+		tokens.push_back(manager->get_id(number));
+	}
 }
 
 void lexer::op()

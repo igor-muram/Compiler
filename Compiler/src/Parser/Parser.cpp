@@ -48,7 +48,7 @@ void Parser::Parse(token_iterator begin, token_iterator end)
 		}
 		else
 		{
-			cout << "ERROR!" << raw_token << '[' << manager->get_by_id(*token).get_value() << ']' << " is not allowed!" << std::endl;
+			cout << "ERROR!" << '[' << raw_token << ']' << " is not allowed!" << std::endl;
 			token = end;
 		}
 	}
@@ -63,7 +63,7 @@ void Parser::Accept(std::string raw_token)
 {
 	if (raw_token == "var")
 	{
-		if (token != begin && manager->get_by_id(*(token - 1)).get_name() == "int")
+		if (token != begin && (manager->get_by_id(*(token - 1)).get_name() == "int" || manager->get_by_id(*(token - 1)).get_name() == ","))
 		{
 			variable v;
 			v.id = manager->get_by_id(*token).get_value();
