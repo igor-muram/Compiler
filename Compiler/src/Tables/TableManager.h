@@ -79,6 +79,15 @@ public:
 		return spaces->contains(word);
 	}
 
+	bool is_const(std::string word)
+	{
+		lexeme lex(word);
+		if (isdigit(word[0]))
+			lex.set_type(VARTYPE::CONST);
+
+		return constants->contains(lex);
+	}
+
 	ID get_id(string word)
 	{
 		ID id;

@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\CodeGenerator\CodeGenerator.cpp" />
     <ClCompile Include="src\Lexer\Lexer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Parser\GrammarTable.cpp" />
@@ -153,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ASTBuilder\ASTBuilder.h" />
+    <ClInclude Include="src\CodeGenerator\CodeGenerator.h" />
     <ClInclude Include="src\Lexer\ID.h" />
     <ClInclude Include="src\Lexer\Lexeme.h" />
     <ClInclude Include="src\Lexer\Lexer.h" />
