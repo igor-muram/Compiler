@@ -6,7 +6,6 @@ GrammarTable::GrammarTable(std::string filename)
 
 	if (in.is_open())
 	{
-
 		int count;
 		in >> count;
 		for (int i = 0; i < count; i++)
@@ -17,7 +16,5 @@ GrammarTable::GrammarTable(std::string filename)
 		}
 	}
 	else
-	{
 		std::cout << "Can't open grammar table file" << std::endl;
-	}
 }

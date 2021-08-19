@@ -30,7 +30,6 @@ void CodeGenerator::Generate(std::vector<std::string>& postfix, std::vector<vari
 				code.push_back(*pos);
 		}
 
-
 		if (*pos == "=")
 			AssignCode();
 		else if (*pos == "+")
@@ -55,20 +54,14 @@ void CodeGenerator::Generate(std::vector<std::string>& postfix, std::vector<vari
 		pos++;
 	}
 
-	for (auto pair: consts)
-	{
+	for (auto pair : consts)
 		head.push_back(pair.second + " DD " + pair.first);
-	}
 
 	for (int i = 0; i < var_count; i++)
-	{
 		head.push_back("T" + std::to_string(i) + " DD 0");
-	}
 
 	for (auto v : variables)
-	{
 		head.push_back(v.id + " DD 0");
-	}
 }
 
 void CodeGenerator::AssignCode()
@@ -91,7 +84,6 @@ void CodeGenerator::PlusCode()
 
 	std::string t = getT(op1, op2);
 
-
 	code.push_back("mov eax, " + op1);
 	code.push_back("add eax, " + op2);
 	code.push_back("mov " + t + ", eax");
@@ -107,7 +99,7 @@ void CodeGenerator::MinusCode()
 	stack.pop();
 
 	std::string t = getT(op1, op2);
-	
+
 	code.push_back("mov eax, " + op1);
 	code.push_back("sub eax, " + op2);
 	code.push_back("mov " + t + ", eax");
@@ -123,7 +115,7 @@ void CodeGenerator::MulCode()
 	stack.pop();
 
 	std::string t = getT(op1, op2);
-	
+
 	code.push_back("mov eax, " + op1);
 	code.push_back("imul eax, " + op2);
 	code.push_back("mov " + t + ", eax");

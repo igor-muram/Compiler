@@ -55,9 +55,7 @@ void lexer::word()
 		need = false;
 	}
 	else
-	{
 		tokens.push_back(manager->get_id(word));
-	}
 }
 
 void lexer::number()
@@ -82,9 +80,7 @@ void lexer::number()
 		need = false;
 	}
 	else
-	{
 		tokens.push_back(manager->get_id(number));
-	}
 }
 
 void lexer::op()
@@ -134,7 +130,7 @@ void lexer::op()
 			pos++;
 		}
 		else
-		{ 
+		{
 			string op;
 			op.push_back(*pos);
 			tokens.push_back(manager->get_id(op));
@@ -213,7 +209,6 @@ void lexer::comment()
 		error();
 		pos++;
 	}
-
 	else if (*pos == '/')
 	{
 		while (*pos != '\n')
@@ -222,7 +217,7 @@ void lexer::comment()
 	else if (*pos == '*')
 	{
 		pos++;
-		while (pos + 1 != end  && *pos != '*' && *(pos + 1) != '/')
+		while (pos + 1 != end && *pos != '*' && *(pos + 1) != '/')
 			pos++;
 
 		if (pos + 1 != end)

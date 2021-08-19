@@ -34,13 +34,13 @@ public:
 		operators->put("<");
 		operators->put("=");
 
-								// везде пробел, таб, перенос строки
-		delimiters->put(",");	// буква, /
-		delimiters->put(";");	// буква, }, /
-		delimiters->put("{");	// буква, }, /
-		delimiters->put("}");	// буква, }, /
-		delimiters->put("(");	// буква, цифра, (, ), /
-		delimiters->put(")");	// ;, запятая, ), {, /
+		// anywhere " ", \t, \n
+		delimiters->put(",");	// letter, /
+		delimiters->put(";");	// letter, }, /
+		delimiters->put("{");	// letter, }, /
+		delimiters->put("}");	// letter, }, /
+		delimiters->put("(");	// letter, digit, (, ), /
+		delimiters->put(")");	// ;, comma, ), {, /
 
 		spaces->put("\t");
 		spaces->put("\n");
@@ -58,7 +58,6 @@ public:
 		word.push_back(symbol);
 		return operators->contains(word);
 	}
-
 
 	bool is_operator(std::string symbol)
 	{
@@ -120,7 +119,7 @@ public:
 			keywords->get_by_id(id, word);
 			return lexeme(word);
 		}
-		
+
 		if (id.table_no == 1)
 		{
 			operators->get_by_id(id, word);

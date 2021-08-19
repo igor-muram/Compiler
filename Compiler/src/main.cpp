@@ -35,23 +35,18 @@ int main()
 	ast.Build(begin, end);
 
 	for (auto lex : ast.postfix)
-	{
-		std::cout << lex << " ";
-	}
-	
-	std::cout << std::endl;
+		cout << lex << " ";
+
+	cout << endl;
 
 	CodeGenerator generator(&manager);
 	generator.Generate(ast.postfix, parser.variables);
 
 	for (auto iterator = generator.HeadBegin(); iterator != generator.HeadEnd(); iterator++)
-	{
-		std::cout << *iterator << std::endl;
-	}
+		cout << *iterator << endl;
 
 	for (auto iterator = generator.BodyBegin(); iterator != generator.BodyEnd(); iterator++)
-	{
-		std::cout << *iterator << std::endl;
-	}
+		cout << *iterator << endl;
+
 	cin.get();
 }

@@ -16,13 +16,9 @@ void Parser::Parse(token_iterator begin, token_iterator end)
 	{
 		std::string raw_token;
 		if (manager->get_by_id(*token).get_name() == "operator")
-		{
 			raw_token = manager->get_by_id(*token).get_value();
-		}
 		else
-		{
 			raw_token = manager->get_by_id(*token).get_name();
-		}
 
 		if (std::find(table[row].terminals.begin(), table[row].terminals.end(), raw_token) != table[row].terminals.end())
 		{

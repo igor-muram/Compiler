@@ -21,8 +21,6 @@ public:
 	vector<ID>::iterator tokens_end() { return tokens.end(); }
 	vector<string>::iterator errors_end() { return errors.end(); }
 
-
-
 private:
 	table_manager* manager;
 	string::iterator pos;

@@ -58,6 +58,7 @@ public:
 	}
 
 	std::vector<std::string> postfix;
+
 private:
 	table_manager* manager;
 	ASTNode* tree;
@@ -65,8 +66,6 @@ private:
 
 	std::string raw = "";
 	std::string matching = "";
-
-	
 
 	int label = 0;
 
@@ -87,9 +86,7 @@ private:
 			return type;
 		}
 		else
-		{
 			return "";
-		}
 	}
 
 	OPs MatchOp()
@@ -97,28 +94,16 @@ private:
 		OPs op;
 		std::string raw_op = manager->get_by_id(*token).get_value();
 
-		if (raw_op == "*")
-			op = OPs::MUL;
-
-		if (raw_op == "+")
-			op = OPs::ADD;
-
-		if (raw_op == "-")
-			op = OPs::SUB;
-
-		if (raw_op == "==")
-			op = OPs::EQ;
-
-		if (raw_op == "!=")
-			op = OPs::NE;
-
-		if (raw_op == "<")
-			op = OPs::LT;
-		
-		if (raw_op == "=")
-			op = OPs::ASSIGN;
+		if (raw_op == "*")  op = OPs::MUL;
+		if (raw_op == "+")  op = OPs::ADD;
+		if (raw_op == "-")  op = OPs::SUB;
+		if (raw_op == "==") op = OPs::EQ;
+		if (raw_op == "!=") op = OPs::NE;
+		if (raw_op == "<")  op = OPs::LT;
+		if (raw_op == "=")  op = OPs::ASSIGN;
 
 		token++;
+
 		return op;
 	}
 
@@ -128,9 +113,8 @@ private:
 		while (token != end)
 		{
 			if (IsMatch("int"))
-			{
 				body->AddChild(Decl());
-			}
+
 			if (IsMatch("var") || IsMatch("const"))
 			{
 				body->AddChild(Expr(true));
@@ -144,9 +128,7 @@ private:
 				body->AddChild(Return());
 			}
 			else
-			{
 				token++;
-			}
 		}
 
 		return body;
@@ -181,6 +163,7 @@ private:
 
 		node->AddChild(exprs.back());
 		node->AddChild(new ASTNode(Match(";")));
+
 		return node;
 	}
 
@@ -194,6 +177,7 @@ private:
 		ASTNode* cond;
 		ASTNode* CJ = new ASTNode("CJ");
 		ASTNode* UJ = new ASTNode("UJ", L1 + ":");
+
 		CJ->AddChild(Expr(true));
 		CJ->AddChild(new ASTNode("label", L1));
 
@@ -223,7 +207,7 @@ private:
 			cond->AddChild(CJ);
 			cond->AddChild(B);
 		}
-		
+
 		return cond;
 	}
 
@@ -249,9 +233,7 @@ private:
 				body->AddChild(Return());
 			}
 			else
-			{
 				token++;
-			}
 		}
 
 		return body;
@@ -393,9 +375,7 @@ private:
 			}
 
 			if (IsMatch("("))
-			{
 				stack.push(Match("("));
-			}
 
 			if (IsMatch(")"))
 			{
@@ -406,23 +386,20 @@ private:
 					top = stack.top();
 				}
 				stack.pop();
-				
+
 				Match(")");
 			}
 		}
 
 		while (!stack.empty())
-		{
 			FreeStack(stack, node_stack);
-		}
 
 		ASTNode* expr = new ASTNode("expr");
 		expr->AddChild(node_stack.top());
 
 		if (IsMatch(";") && with_semi)
-		{
 			expr->AddChild(new ASTNode(";"));
-		}
+
 		return expr;
 	}
 
@@ -444,9 +421,7 @@ private:
 	void BuildPostfix(ASTNode* root)
 	{
 		for (auto child : root->Childs)
-		{
 			BuildPostfix(child);
-		}
 
 		if (root->type != "program" && root->type != "body" && root->type != "decl" && root->type != "expr" && root->type != "ifbody")
 		{

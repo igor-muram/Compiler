@@ -22,7 +22,7 @@ public:
 	hash_node* get_next() { return next; }
 
 	void set_next(hash_node* node) { next = node; }
-	void set_value(lexeme value) { this->value = value;}
+	void set_value(lexeme value) { this->value = value; }
 
 private:
 	hash_node* next;
@@ -36,7 +36,7 @@ public:
 	{
 		this->table_no = table_no;
 		this->size = size;
-		table = new hash_node*[size];
+		table = new hash_node * [size];
 
 		for (int i = 0; i < size; i++)
 			table[i] = nullptr;
@@ -48,8 +48,8 @@ public:
 		{
 			hash_node* node = table[i];
 
-			while(node != nullptr)
-			{ 
+			while (node != nullptr)
+			{
 				hash_node* prev = node;
 				node = node->get_next();
 				delete prev;
@@ -82,21 +82,19 @@ public:
 	{
 		int h = hash(value.get_name());
 		hash_node* new_node = new hash_node(value);
-		
+
 		if (table[h] != nullptr)
 		{
 			hash_node* node = table[h];
 			while (node->get_next() != nullptr)
 				node = node->get_next();
 
-			node->set_next(new_node);	
+			node->set_next(new_node);
 		}
 		else
-		{
 			table[h] = new_node;
-		}
 	}
-	
+
 	bool change(ID id, lexeme value)
 	{
 		if (id.node_no == -1 && id.chain_no == -1)
@@ -156,7 +154,7 @@ public:
 
 	int get_table_no() { return table_no; }
 
-	void print() 
+	void print()
 	{
 		for (int i = 0; i < size; i++)
 		{
@@ -182,9 +180,7 @@ private:
 	{
 		long hash = 7;
 		for (int i = 0; i < value.size(); i++)
-		{
 			hash = hash * 6 + abs(static_cast<long>(value[i]));
-		}
 
 		return hash % size;
 	}
