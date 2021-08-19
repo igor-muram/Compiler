@@ -1,0 +1,13 @@
+int m@ain(()
+{
+	int a = 10, b = 10f343;
+	
+	int 34__ = 4;
+	
+	if (fd << 345)
+		return !0;
+	else
+		34__ += (+44 + 9=);
+	
+	return 0;
+}

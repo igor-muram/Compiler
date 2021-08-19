@@ -8,6 +8,8 @@
 
 using namespace std;
 
+
+// [TODO] : Const table with lexeme instead of string
 class const_table {
 
 public:

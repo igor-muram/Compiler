@@ -77,6 +77,7 @@ public:
 		return true;
 	}
 
+	// [TODO] : put must return ID
 	void put(lexeme value)
 	{
 		int h = hash(value.get_name());
@@ -164,7 +165,7 @@ public:
 
 			while (node != nullptr)
 			{
-				cout << node->get_value().to_string() << " -> ";
+				cout << node->get_value() << " -> ";
 				node = node->get_next();
 			}
 
@@ -177,12 +178,12 @@ private:
 	int size;
 	int table_no;
 
-	int hash(string& value)
+	int hash(string value)
 	{
-		int hash = 7;
+		long hash = 7;
 		for (int i = 0; i < value.size(); i++)
 		{
-			hash = hash * 31 + abs(static_cast<int>(value[i]));
+			hash = hash * 6 + abs(static_cast<long>(value[i]));
 		}
 
 		return hash % size;
