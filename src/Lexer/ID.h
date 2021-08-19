@@ -11,9 +11,9 @@ struct ID
 
 	string to_string()
 	{
-		stringstream idBuilder;
-		idBuilder << '(' << table_no << ',' << chain_no << ',' << node_no << ')';
-		return idBuilder.str();
+		stringstream stream;
+		stream << '(' << table_no << ',' << chain_no << ',' << node_no << ')';
+		return stream.str();
 	}
 
 	int table_no;

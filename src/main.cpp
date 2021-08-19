@@ -30,7 +30,6 @@ int main()
 	}
 
 	lexeme count;
-	id.node_no = 100;
 	table.get_by_id(id, count);
 	count.set_value("100");
 	count.set_type(VARTYPE::INT);
