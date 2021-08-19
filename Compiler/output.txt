@@ -1,0 +1,48 @@
+a 1 2 + 3 + = ; a 5 < L0 CJ a 5 = ; L1 UJ L0: a 100 < L2 CJ a 10000 = ; L2: L1: a return
+C0 DD 1
+C4 DD 100
+C5 DD 10000
+C1 DD 2
+C2 DD 3
+C3 DD 5
+T0 DD 0
+T1 DD 0
+T2 DD 0
+a DD 0
+mov eax, C0
+add eax, C1
+mov T0, eax
+mov eax, T0
+add eax, C2
+mov T0, eax
+mov eax, T0
+mov a, eax
+mov eax, C3
+cmp a, eax
+ja LL0
+mov T1, 1
+jmp LL1
+LL0:
+mov T1, 0
+LL1:
+cmp T1, 0
+je L0
+mov eax, C3
+mov a, eax
+jmp L1
+L0:
+mov eax, C4
+cmp a, eax
+ja LL2
+mov T2, 1
+jmp LL3
+LL2:
+mov T2, 0
+LL3:
+cmp T2, 0
+je L2
+mov eax, C5
+mov a, eax
+L2:
+L1:
+mov eax, a

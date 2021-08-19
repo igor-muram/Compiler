@@ -69,5 +69,6 @@
   <ItemGroup>
     <Text Include="input\program.txt" />
     <Text Include="input\grammar_table.txt" />
+    <Text Include="output.txt" />
   </ItemGroup>
 </Project>
