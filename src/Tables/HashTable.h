@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <iostream>
 
 #include "../Lexer/ID.h"
 #include "../Types/Types.h"
@@ -85,7 +86,7 @@ public:
 			table[i] = nullptr;
 		}
 
-		delete[size] table;
+		delete[] table;
 	}
 
 	bool contains(variable value)
@@ -163,6 +164,25 @@ public:
 	}
 
 	int get_table_no() { return table_no; }
+
+	void print() {
+		for (int i = 0; i < size; i++)
+		{
+			cout << i << " -> ";
+			hash_node* node = table[i];
+
+			if (node != nullptr)
+			{
+				while (node != nullptr)
+				{
+					cout << node->get_value().name << " ";
+					node = node->get_next();
+				}
+			}
+
+			cout << endl;
+		}
+	}
 
 private:
 	hash_node** table;

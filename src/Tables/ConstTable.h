@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 
 #include "../Lexer/ID.h"
 
@@ -70,6 +71,12 @@ public:
 	}
 
 	int get_table_no() { return table_no; }
+
+	void print() 
+	{
+		for (auto element : table)
+			cout << element << endl;
+	}
 
 private:
 	vector<string> table;

@@ -19,18 +19,13 @@ int main()
 	table.put(variable(VARTYPE::CHAR, "c"));
 	table.put(variable(VARTYPE::FLOAT, "eps"));
 
-
+	table.print();
 	if (table.contains(v))
 	{
 		ID id;
 		table.get_id(v, id);
 		variable c;
 		table.get_by_id(id, c);
-	}
-
-	if (table.contains(variable()))
-	{
-		cout << "ERROR" << endl;
 	}
 
 	const_table const_t(1);
@@ -40,6 +35,8 @@ int main()
 	const_t.put("return");
 	const_t.put("double");
 
+	cout << endl << endl;
+	const_t.print();
 	if (const_t.contains("int"))
 	{
 		ID id;
