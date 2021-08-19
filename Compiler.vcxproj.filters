@@ -18,13 +18,16 @@
     <ClInclude Include="src\Lexer\ID.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Types\Types.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Tables\ConstTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Tables\HashTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Lexer\Lexeme.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

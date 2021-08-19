@@ -112,9 +112,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Lexer\ID.h" />
+    <ClInclude Include="src\Lexer\Lexeme.h" />
     <ClInclude Include="src\Tables\ConstTable.h" />
     <ClInclude Include="src\Tables\HashTable.h" />
-    <ClInclude Include="src\Types\Types.h" />
+    <ClInclude Include="src\Types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

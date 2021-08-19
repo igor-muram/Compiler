@@ -4,57 +4,29 @@
 #include <iostream>
 
 #include "../Lexer/ID.h"
-#include "../Types/Types.h"
+#include "../Lexer/Lexeme.h"
+#include "../Types.h"
 
 using namespace std;
-
-struct variable {
-	VARTYPE type;
-	string name;
-	string value;
-
-	variable() : type(VARTYPE::VOID), name(""), value("") {}
-	variable(VARTYPE type, string name, string value = "") : type(type), name(name), value(value) {}
-	variable(const variable& var) : type(var.type), name(var.name), value(var.value) {}
-
-	bool operator==(variable& a)
-	{
-		return type == a.type && name == a.name && value == a.value;
-	}
-
-	bool operator!=(variable& a)
-	{
-		return !(type == a.type && name == a.name && value == a.value);
-	}
-};
 
 class hash_node
 {
 public:
-	hash_node(variable value)
+	hash_node(lexeme value)
 	{
 		this->value = value;
 		next = nullptr;
 	}
 
-	variable get_value()
-	{
-		return value;
-	}
+	lexeme get_value() { return value; }
+	hash_node* get_next() { return next; }
 
-	hash_node* get_next()
-	{
-		return next;
-	}
-
-	void set_next(hash_node* node)
-	{
-		next = node;
-	}
+	void set_next(hash_node* node) { next = node; }
+	void set_value(lexeme value) { this->value = value;}
 
 private:
 	hash_node* next;
-	variable value;
+	lexeme value;
 };
 
 class hash_table
@@ -89,9 +61,9 @@ public:
 		delete[] table;
 	}
 
-	bool contains(variable value)
+	bool contains(lexeme value)
 	{
-		int h = hash(value.name);
+		int h = hash(value.get_name());
 		if (table[h] == nullptr)
 			return false;
 
@@ -99,15 +71,15 @@ public:
 		while (node->get_next() != nullptr && node->get_value() != value)
 			node = node->get_next();
 
-		if (node->get_value() == value)
-			return true;
+		if (node->get_value() != value)
+			return false;
 
-		return false;
+		return true;
 	}
 
-	void put(variable value)
+	void put(lexeme value)
 	{
-		int h = hash(value.name);
+		int h = hash(value.get_name());
 		hash_node* new_node = new hash_node(value);
 		
 		if (table[h] != nullptr)
@@ -123,12 +95,26 @@ public:
 			table[h] = new_node;
 		}
 	}
+	
+	bool change(ID id, lexeme value)
+	{
+		if (id.node_no == -1 && id.chain_no == -1)
+			return false;
 
-	bool get_id(variable value, ID& id)
+		hash_node* node = table[id.chain_no];
+
+		for (int i = 0; i < id.node_no; i++)
+			node = node->get_next();
+
+		node->set_value(value);
+		return true;
+	}
+
+	bool get_id(lexeme value, ID& id)
 	{
 		id.table_no = table_no;
-		id.row_no = hash(value.name);
-		hash_node* node = table[id.row_no];
+		id.chain_no = hash(value.get_name());
+		hash_node* node = table[id.chain_no];
 
 		int pos = 0;
 		while (node->get_next() != nullptr && node->get_value() != value)
@@ -144,43 +130,45 @@ public:
 		}
 		else
 		{
-			id.node_no = id.row_no = -1;
+			id.node_no = id.chain_no = -1;
 			return false;
 		}
 	}
 
-	bool get_by_id(ID id, variable& value)
+	bool get_by_id(ID id, lexeme& value)
 	{
-		if (id.node_no == -1 && id.row_no == -1)
+		if (id.node_no == -1 && id.chain_no == -1)
 			return false;
 
-		hash_node* node = table[id.row_no];
+		hash_node* node = table[id.chain_no];
 
-		for (int i = 0; i < id.node_no; i++)
+		for (int i = 0; i < id.node_no && node != nullptr; i++)
 			node = node->get_next();
 
-		value = node->get_value();
-		return true;
+		if (node != nullptr)
+		{
+			value = node->get_value();
+			return true;
+		}
+		else return false;
 	}
 
 	int get_table_no() { return table_no; }
 
-	void print() {
+	void print() 
+	{
 		for (int i = 0; i < size; i++)
 		{
 			cout << i << " -> ";
 			hash_node* node = table[i];
 
-			if (node != nullptr)
+			while (node != nullptr)
 			{
-				while (node != nullptr)
-				{
-					cout << node->get_value().name << " ";
-					node = node->get_next();
-				}
+				cout << node->get_value().to_string() << " -> ";
+				node = node->get_next();
 			}
 
-			cout << endl;
+			cout << "null" << endl;
 		}
 	}
 

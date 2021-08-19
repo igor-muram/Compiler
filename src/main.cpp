@@ -4,36 +4,48 @@
 #include "Tables/ConstTable.h"
 #include "Tables/HashTable.h"
 #include "Lexer/ID.h"
+#include "Lexer/lexeme.h"
+#include "Types.h"
 
 using namespace std;
 
 int main()
 {
-
 	hash_table table(0, 5);
 
-	variable v(VARTYPE::FLOAT, "a");
+	lexeme v(VARTYPE::FLOAT, "a");
 
-	table.put(variable(VARTYPE::FLOAT, "a"));
-	table.put(variable(VARTYPE::INT, "b"));
-	table.put(variable(VARTYPE::CHAR, "c"));
-	table.put(variable(VARTYPE::FLOAT, "eps"));
+	table.put(lexeme(VARTYPE::FLOAT, "a"));
+	table.put(lexeme(VARTYPE::INT, "b"));
+	table.put(lexeme(VARTYPE::CHAR, "c"));
+	table.put(lexeme(VARTYPE::FLOAT, "eps"));
 
 	table.print();
+	ID id;
 	if (table.contains(v))
 	{
-		ID id;
 		table.get_id(v, id);
-		variable c;
+		lexeme c;
 		table.get_by_id(id, c);
 	}
 
+	lexeme count;
+	id.node_no = 100;
+	table.get_by_id(id, count);
+	count.set_value("100");
+	count.set_type(VARTYPE::INT);
+	table.change(id, count);
+
+	cout << endl;
+	table.print();
 	const_table const_t(1);
 
 	const_t.put("main");
 	const_t.put("int");
 	const_t.put("return");
 	const_t.put("double");
+
+
 
 	cout << endl << endl;
 	const_t.print();

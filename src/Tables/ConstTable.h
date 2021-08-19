@@ -15,9 +15,7 @@ public:
 
 	void put(string word)
 	{
-		if (!contains(word))
-			table.push_back(word);
-
+		table.push_back(word);
 		size++;
 	}
 
@@ -47,18 +45,15 @@ public:
 
 	bool get_by_id(ID id, string& word)
 	{
-		if (id.row_no == -1)
+		if (id.chain_no == -1)
 			return false; 
 
-		if (id.row_no < size)
+		if (id.chain_no < size)
 		{
-			word = table[id.row_no];
+			word = table[id.chain_no];
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+		else return false;
 	}
 
 	bool contains(string word)
